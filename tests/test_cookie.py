@@ -40,9 +40,9 @@ def test_basic_support():
 def test_expire_support():
     c = SecureCookie(secret_key=b"foo")
     c["x"] = 42
-    in_the_future = datetime.datetime.utcnow() + datetime.timedelta(days=1)
+    in_the_future = datetime.datetime.now(datetime.UTC) + datetime.timedelta(days=1)
     s_future = c.serialize(expires=in_the_future)
-    in_the_past = datetime.datetime.utcnow() - datetime.timedelta(days=1)
+    in_the_past = datetime.datetime.now(datetime.UTC) - datetime.timedelta(days=1)
     s_past = c.serialize(expires=in_the_past)
 
     c2 = SecureCookie.unserialize(s_future, b"foo")
