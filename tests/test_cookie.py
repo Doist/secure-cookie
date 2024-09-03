@@ -1,5 +1,6 @@
 import datetime
 import json
+import pickle
 
 from werkzeug.http import parse_cookie
 from werkzeug.wrappers import Request
@@ -85,4 +86,13 @@ def test_json():
 
     secure = JSONSecureCookie({"foo": "bar"}, "secret").serialize()
     data = JSONSecureCookie.unserialize(secure, "secret")
+    assert data == {"foo": "bar"}
+
+
+def test_pickle():
+    class PickleSecureCookie(SecureCookie):
+        serialization_method = pickle
+
+    secure = PickleSecureCookie({"foo": "bar"}, "secret").serialize()
+    data = PickleSecureCookie.unserialize(secure, "secret")
     assert data == {"foo": "bar"}
