@@ -395,7 +395,7 @@ class SecureCookie(ModificationTrackingDict):
             ``expires`` date is used instead.
         """
         if force or self.should_save:
-            data = self.serialize(session_expires or expires)
+            data = self.serialize(session_expires or expires).decode()
             response.set_cookie(
                 key,
                 data,
