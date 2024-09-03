@@ -98,17 +98,16 @@ API
 
 .. autoexception:: UnquoteError
 """
+
 import base64
 import json as _json
+import urllib.parse
 from datetime import datetime
 from hashlib import sha1 as _default_hash
 from hmac import compare_digest
 from hmac import new as hmac
 from numbers import Number
 from time import time
-
-from werkzeug.urls import url_quote_plus
-from werkzeug.urls import url_unquote_plus
 
 from ._compat import to_bytes
 from ._compat import to_native
@@ -280,7 +279,7 @@ class SecureCookie(ModificationTrackingDict):
             result.append(
                 (
                     "{}={}".format(
-                        url_quote_plus(key), self.quote(value).decode("ascii")
+                        urllib.parse.quote_plus(key), self.quote(value).decode("ascii")
                     )
                 ).encode("ascii")
             )
@@ -319,7 +318,7 @@ class SecureCookie(ModificationTrackingDict):
 
                 key, value = item.split(b"=", 1)
                 # try to make the key a string
-                key = url_unquote_plus(key.decode("ascii"))
+                key = urllib.parse.unquote_plus(key.decode("ascii"))
 
                 try:
                     key = to_native(key)
